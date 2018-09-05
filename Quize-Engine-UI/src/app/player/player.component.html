@@ -1,0 +1,11 @@
+
+<div class="player">
+  <h3>Quiz</h3>
+  <!-- <div>
+    <button class="btn-player" (click)="startQuiz()"   >Start Quiz</button>
+  </div> -->
+   <!-- <ng-template question-host></ng-template> -->
+</div>
+<app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
+<button class="btn-player" (click)="getNextQuestion()"   >Next</button>
+<!-- (onSendResponse)="sendData($event)" -->
