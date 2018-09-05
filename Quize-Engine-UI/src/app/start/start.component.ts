@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,  ActivatedRoute, ParamMap } from '@angular/router';
 import { PlayerService } from '../player.service';
+//import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-start',
@@ -23,8 +24,11 @@ export class StartComponent implements OnInit {
   }
 
   startQuiz() {
+    this.playerService.establishConnection(this.userId);
+    console.log("inside start method file");
     //this.playerService.onConnectionMapping(this.userId);
-    this.router.navigate(['/player',{id: this.userId}])
+
+    this.router.navigate(['/player',this.userId])
 
   }
 }

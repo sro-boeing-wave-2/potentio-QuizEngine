@@ -29,10 +29,11 @@ export class PlayerComponent implements OnInit {
   this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
     let id = parseInt(params.get('id'));
     this.userId = id;
+    console.log(this.userId);
   });
-  this.playerService.onConnectionMapping(this.userId);
+    //this.playerService.onConnectionMapping(this.userId);
     this.playerService.getQuestionStream().subscribe(question => this.question = question, error => console.log(error));
-    console.log(this.question);
+    //console.log(this.question);
   }
 x
  response : any= "deepika";

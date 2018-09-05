@@ -16,11 +16,17 @@ export class PlayerService {
   @Input() response: any;
   constructor()
   {
+    console.log("inside a player service");
     this._question = new Subject();
+  }
+
+  establishConnection(userId: number)
+  {
     this._connection = new HubConnectionBuilder().withUrl("http://172.23.238.237:8050/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     this._connection.on('EndOfQuestions', this.onEndOfQuestionHandler);
-    this._connection.start().then(() => console.log('MessageHub Connected'));
+    this._connection.start().then(() => this.onConnectionMapping(userId));
+
   }
 
   getQuestionStream(): Observable<QuestionModel> {
@@ -31,6 +37,7 @@ export class PlayerService {
     return throwError(err.message || "Not Found");
   }
   onConnectionMapping(userId: number) {
+    console.log("inside onconnectionMapping" + userId);
     this._connection.invoke('onConnectionMapping', userId);
     this._connection.on('onConnectionMapping', msg => {
       console.log(msg);
