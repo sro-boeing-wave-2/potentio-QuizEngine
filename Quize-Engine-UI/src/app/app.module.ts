@@ -13,7 +13,6 @@ import { PlayerService } from './player.service';
 import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
 import { StartComponent } from './start/start.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +21,6 @@ import { StartComponent } from './start/start.component';
     QuestionDirective,
     FillInTheBlanksComponent,
     StartComponent
-
   ],
   imports: [
     BrowserModule,

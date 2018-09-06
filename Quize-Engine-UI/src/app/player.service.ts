@@ -1,7 +1,6 @@
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 import { Injectable, EventEmitter, Input } from '@angular/core';
 import { McqComponent }  from './mcq/mcq.component';
-
 import { AdComponents} from './adComponent';
 import { QuestionModel } from './questionModule';
 import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
@@ -22,11 +21,10 @@ export class PlayerService {
 
   establishConnection(userId: number)
   {
-    this._connection = new HubConnectionBuilder().withUrl("http://172.23.238.237:8050/question").build();
+    this._connection = new HubConnectionBuilder().withUrl("http://172.19.32.1:9050/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     this._connection.on('EndOfQuestions', this.onEndOfQuestionHandler);
     this._connection.start().then(() => this.onConnectionMapping(userId));
-
   }
 
   getQuestionStream(): Observable<QuestionModel> {
@@ -36,13 +34,15 @@ export class PlayerService {
   handleError(err: HttpErrorResponse) {
     return throwError(err.message || "Not Found");
   }
+
   onConnectionMapping(userId: number) {
-    console.log("inside onconnectionMapping" + userId);
+    //console.log("inside onconnectionMapping" + userId);
     this._connection.invoke('onConnectionMapping', userId);
     this._connection.on('onConnectionMapping', msg => {
       console.log(msg);
     });
   }
+
   sendResponse(response: QuestionModel) {
     this._connection.invoke('send', response);
       this._connection.on('send', msg => {
@@ -63,9 +63,6 @@ export class PlayerService {
     console.log("Received End of Questions");
   }
   getComponents() {
-  //  var q : QuestionModel;
-  //   q.Quesid = 9;
-  //   q.QuestionText = "where is INdia";
     return [
       new AdComponents(McqComponent, "hello man"),
       new AdComponents(FillInTheBlanksComponent,"hello sddc")

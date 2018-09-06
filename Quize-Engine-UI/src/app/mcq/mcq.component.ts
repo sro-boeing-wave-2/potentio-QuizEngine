@@ -18,15 +18,11 @@ export class McqComponent implements OnInit {
     console.log(responseValue);
     this._response = responseValue;
     this.onResponse.emit(responseValue);
-   // this.playerService.sendResponse(responseValue);
   }
 
   constructor() { }
 
-  ngOnInit() {
-
-  }
-
+  ngOnInit() {}
 
   @Input() question: QuestionModel;
   @Output() onResponse = new EventEmitter<any>();

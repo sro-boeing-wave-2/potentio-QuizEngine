@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AdComponents } from './adComponent';
 import { PlayerService } from './player.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -14,17 +13,9 @@ export class AppComponent {
   userId: string;
   domain: string;
 
-  constructor(private playerService: PlayerService , private router : Router) {}
+  constructor(private playerService: PlayerService) {}
 
   ngOnInit() {
     this.questionComponents = this.playerService.getComponents();
-    this.userId = "deepikamohan";
-    this.domain = "java";
   }
-
-/*   startQuiz() {
-    this.router.navigate(['/player'])
-
-  } */
-
 }
