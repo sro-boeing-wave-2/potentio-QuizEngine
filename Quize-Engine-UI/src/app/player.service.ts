@@ -20,12 +20,12 @@ export class PlayerService {
     this._question = new Subject();
   }
 
-  startQuiz(userId: number)
+  startQuiz(userId: number, domain: string)
   {
     this._connection = new HubConnectionBuilder().withUrl("http://localhost:9050/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     // this._connection.on('EndQuiz', this.onQuizEnded.bind(this));
-    this._connection.start().then(() => { this._connection.invoke('StartQuiz', userId); });
+    this._connection.start().then(() => { this._connection.invoke('StartQuiz', userId, domain); });
   }
 
   getQuestionStream(): Observable<QuestionModel> {

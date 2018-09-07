@@ -9,6 +9,7 @@ import { PlayerService } from '../player.service';
 })
 export class StartComponent implements OnInit {
   userId: number;
+  domain: string;
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private playerService: PlayerService) { }
 
   ngOnInit() {
@@ -17,10 +18,15 @@ export class StartComponent implements OnInit {
       let id = parseInt(params.get('id'));
       this.userId = id;
     });
+    this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
+      let domain = params.get('domain');
+      this.domain = domain;
+      console.log("domain is " + domain);
+    });
   }
 
   startQuiz() {
-    this.playerService.startQuiz(this.userId);
+    this.playerService.startQuiz(this.userId, this.domain);
     this.router.navigate(['/player',this.userId]);
   }
 }
