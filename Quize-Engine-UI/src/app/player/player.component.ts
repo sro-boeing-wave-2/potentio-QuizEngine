@@ -19,42 +19,37 @@ export class PlayerComponent implements OnInit {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,private playerService: PlayerService, private activatedRoute: ActivatedRoute) { }
   userId: number;
+
   ngOnInit() {
-    //this.loadComponent();
-   // this.playerService.getComponents();
-  this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
-    let id = parseInt(params.get('id'));
-    this.userId = id;
-    console.log(this.userId);
-  });
-    this.playerService.getQuestionStream().subscribe(question => this.question = question, error => console.log(error));
-    //console.log(this.question);
+    this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
+      let id = parseInt(params.get('id'));
+      this.userId = id;
+    });
+
+    this.playerService
+      .getQuestionStream()
+      .subscribe(
+        question => this.question = question,
+        error => console.log(error)
+      );
   }
 
   question : QuestionModel;
 
- onResponseReceived(response) {
-   console.log("Response Received", response);
-   this.question.userResponse = response;
- }
-
-getNextQuestion() {
-    console.log("getting next question");
-  //  this.playerService.getNextQuestion().then(data => {
-  //    this.question = data;
-  //    this.loadComponent();
-  //   });
- // this.playerService.sendResponse(this.response);
-  this.playerService.sendResponse(this.question);
-  return this.playerService.getNextQuestion();
-  //this.loadComponent();
+  onResponseReceived(response) {
+    this.question.userResponse = response;
   }
-  public sendData(response: string){
-    console.log('response is: ', response);
-}
-  // sendResponse() {
-  //   this.playerService.sendResponse(this.response);
-  // }
+
+  getNextQuestion() {
+    return this.playerService.getNextQuestion(this.question);
+    // this.loadComponent();
+  }
+
+  endQuiz() {
+    //this.playerService.sendResponse(this.question);
+    console.log("inside end quiz of player component");
+    return this.playerService.endQuiz(this.question);
+  }
 
   // loadComponent() {
 

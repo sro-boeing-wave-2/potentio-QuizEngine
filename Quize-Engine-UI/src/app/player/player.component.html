@@ -5,4 +5,5 @@
 </div>
 <app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
 <button class="btn-player" (click)="getNextQuestion()"   >Next</button>
+<button class="btn-player" (click)="endQuiz()">Submit</button>
 

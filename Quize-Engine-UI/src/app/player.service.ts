@@ -1,30 +1,31 @@
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
 import { Injectable, EventEmitter, Input } from '@angular/core';
-import { McqComponent }  from './mcq/mcq.component';
-import { AdComponents} from './adComponent';
 import { QuestionModel } from './questionModule';
-import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
 import { Subject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ResponseModel } from './responseModel';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class PlayerService {
   private _connection: HubConnection;
   private _question: Subject<any>;
+  result: ResponseModel;
+
   @Input() response: any;
-  constructor()
+
+  constructor(private router: Router)
   {
-    console.log("inside a player service");
     this._question = new Subject();
   }
 
-  establishConnection(userId: number)
+  startQuiz(userId: number)
   {
-    this._connection = new HubConnectionBuilder().withUrl("http://172.19.32.1:9050/question").build();
+    this._connection = new HubConnectionBuilder().withUrl("http://localhost:9050/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
-    this._connection.on('EndOfQuestions', this.onEndOfQuestionHandler);
-    this._connection.start().then(() => this.onConnectionMapping(userId));
+    // this._connection.on('EndQuiz', this.onQuizEnded.bind(this));
+    this._connection.start().then(() => { this._connection.invoke('StartQuiz', userId); });
   }
 
   getQuestionStream(): Observable<QuestionModel> {
@@ -35,38 +36,40 @@ export class PlayerService {
     return throwError(err.message || "Not Found");
   }
 
-  onConnectionMapping(userId: number) {
-    //console.log("inside onconnectionMapping" + userId);
-    this._connection.invoke('onConnectionMapping', userId);
-    this._connection.on('onConnectionMapping', msg => {
-      console.log(msg);
-    });
-  }
-
-  sendResponse(response: QuestionModel) {
-    this._connection.invoke('send', response);
-      this._connection.on('send', msg => {
-        console.log(msg);
-      });
-  }
-
-  getNextQuestion() {
-    return this._connection.invoke('GetNextQuestion');
+  getNextQuestion(response: QuestionModel) {
+    //console.log("this is inside Get next question " + response.userResponse);
+    return this._connection.invoke('GetNextQuestion', response);
   }
 
   onNextQuestionHandler(nextQuestion) {
-    console.log(this);
     return this._question.next(nextQuestion);
   }
 
-  onEndOfQuestionHandler() {
-    console.log("Received End of Questions");
+  endQuiz(question : QuestionModel) {
+    console.log("inside end quiz of player service");
+    this._connection.invoke('EndQuiz', question);
+    this._connection.on('EndQuiz', msg => {
+         this.result = msg;
+         console.log("result is " +  this.result.userID);
+         //this.router.navigate("localhost:4200/")
+          });
+
   }
-  getComponents() {
-    return [
-      new AdComponents(McqComponent, "hello man"),
-      new AdComponents(FillInTheBlanksComponent,"hello sddc")
-    ];
-  }
+
+  // onQuizEnded() {
+  //   this._connection.invoke('endQuiz');
+  //   // this._connection.on('endQuiz', msg => {
+  //   //   this.result = msg;
+  //   //   console.log("result is " + this.result.questionAttendedCount);
+  //   // });
+
+  // }
+
+  // getComponents() {
+  //   return [
+  //     new AdComponents(McqComponent, "hello man"),
+  //     new AdComponents(FillInTheBlanksComponent,"hello sddc")
+  //   ];
+  // }
 }
 

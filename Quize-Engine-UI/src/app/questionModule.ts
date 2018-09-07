@@ -1,5 +1,5 @@
 export class QuestionModel {
-  public QuestionId : number;
+  public QuestionId : string;
   public QuestionText : string;
   public Options : string[];
   public QuestionType : string;

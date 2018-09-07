@@ -16,6 +16,6 @@ export class AppComponent {
   constructor(private playerService: PlayerService) {}
 
   ngOnInit() {
-    this.questionComponents = this.playerService.getComponents();
+   // this.questionComponents = this.playerService.getComponents();
   }
 }
