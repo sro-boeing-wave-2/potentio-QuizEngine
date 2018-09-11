@@ -1,11 +1,12 @@
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
-import { Injectable, EventEmitter, Input } from '@angular/core';
+import { Injectable, EventEmitter, Input, Inject} from '@angular/core';
 import { QuestionModel } from './questionModule';
 import { Subject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from './responseModel';
 import { Router } from '@angular/router';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable()
 export class PlayerService {
@@ -15,16 +16,20 @@ export class PlayerService {
 
   @Input() response: any;
 
-  constructor(private router: Router)
+  constructor(private router: Router, @Inject(DOCUMENT) private document: any)
   {
     this._question = new Subject();
   }
 
+private resulturl = "http://localhost:4300/start";
+private url="";
+
   startQuiz(userId: number, domain: string)
   {
-    this._connection = new HubConnectionBuilder().withUrl("http://localhost:9050/question").build();
+    this._connection = new HubConnectionBuilder().withUrl("http://localhost:9100/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     // this._connection.on('EndQuiz', this.onQuizEnded.bind(this));
+    console.log("this is the front end domain" + domain);
     this._connection.start().then(() => { this._connection.invoke('StartQuiz', userId, domain); });
   }
 
@@ -50,11 +55,37 @@ export class PlayerService {
     this._connection.invoke('EndQuiz', question);
     this._connection.on('EndQuiz', msg => {
          this.result = msg;
-         console.log("result is " +  this.result.userID);
+         console.log("result is " +  JSON.stringify(this.result));
          //this.router.navigate("localhost:4200/")
+
+        //  this.url = `${this.quizurl}/${this.selectedUser.id}/${DomainName}`;
+         this.url = `http://172.23.238.183:4301/start/77/maths`;
+
+          this.document.location.href = this.url;
           });
 
   }
+
+  // -> Fisher–Yates shuffle algorithm
+shuffleArray(array) : void{
+  var m = array.length, t, i;
+
+  // While there remain elements to shuffle
+  while (m) {
+    // Pick a remaining element…
+    i = Math.floor(Math.random() * m--);
+
+    // And swap it with the current element.
+    t = array[m];
+    array[m] = array[i];
+    array[i] = t;
+  }
+
+  return console.log("Shuffling numbers: " + array);
+}
+
+
+
 
   // onQuizEnded() {
   //   this._connection.invoke('endQuiz');

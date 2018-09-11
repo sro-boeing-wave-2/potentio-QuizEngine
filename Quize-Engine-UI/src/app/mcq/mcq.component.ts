@@ -9,6 +9,7 @@ import { QuestionModel } from '../questionModule';
 export class McqComponent implements OnInit {
 
   private _response: string;
+  public options : string[];
 
   get response() {
     return this._response;

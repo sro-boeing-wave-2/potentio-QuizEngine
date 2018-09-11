@@ -19,11 +19,21 @@ export class PlayerComponent implements OnInit {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver,private playerService: PlayerService, private activatedRoute: ActivatedRoute) { }
   userId: number;
+  domainName: string;
+  // timer: any = null;
+  // startTime: Date;
+  // endTime: Date;
+  // ellapsedTime = '00:00';
+  // duration = '';
 
   ngOnInit() {
     this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
       let id = parseInt(params.get('id'));
       this.userId = id;
+    });
+    this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
+      let d = params.get('domain');
+      this.domainName = d;
     });
 
     this.playerService
@@ -32,8 +42,28 @@ export class PlayerComponent implements OnInit {
         question => this.question = question,
         error => console.log(error)
       );
+
+      // this.startTime = new Date();
+      // this.timer = setInterval(() => { this.tick(); }, 1000);
+      // this.duration = this.parseTime(10);
   }
 
+  // tick() {
+  //   const now = new Date();
+  //   const diff = (now.getTime() - this.startTime.getTime()) / 1000;
+  //   if (diff >= 10) {
+  //     this.endQuiz();
+  //   }
+  //   this.ellapsedTime = this.parseTime(diff);
+  // }
+
+  // parseTime(totalSeconds: number) {
+  //   let mins: string | number = Math.floor(totalSeconds / 60);
+  //   let secs: string | number = Math.round(totalSeconds % 60);
+  //   mins = (mins < 10 ? '0' : '') + mins;
+  //   secs = (secs < 10 ? '0' : '') + secs;
+  //   return `${mins}:${secs}`;
+  // }
   question : QuestionModel;
 
   onResponseReceived(response) {
@@ -48,8 +78,14 @@ export class PlayerComponent implements OnInit {
   endQuiz() {
     //this.playerService.sendResponse(this.question);
     console.log("inside end quiz of player component");
+    //this.playerService.shuffleArray(this.numbers);
     return this.playerService.endQuiz(this.question);
+
   }
+
+  //numbers = [1,2,3,4,5,6,7,8,9,0];
+
+
 
   // loadComponent() {
 

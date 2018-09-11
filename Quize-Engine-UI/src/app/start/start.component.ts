@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,  ActivatedRoute, ParamMap } from '@angular/router';
 import { PlayerService } from '../player.service';
+//import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-start',
@@ -8,8 +9,8 @@ import { PlayerService } from '../player.service';
   styleUrls: ['./start.component.css']
 })
 export class StartComponent implements OnInit {
-  userId: number;
-  domain: string;
+   userId: number;
+   domain: string;
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private playerService: PlayerService) { }
 
   ngOnInit() {
@@ -17,16 +18,21 @@ export class StartComponent implements OnInit {
     this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
       let id = parseInt(params.get('id'));
       this.userId = id;
+
     });
     this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
-      let domain = params.get('domain');
-      this.domain = domain;
-      console.log("domain is " + domain);
+      let d = params.get('domain');
+      this.domain = d;
     });
+
   }
 
   startQuiz() {
     this.playerService.startQuiz(this.userId, this.domain);
-    this.router.navigate(['/player',this.userId]);
+    console.log("inside start method file");
+    //this.playerService.onConnectionMapping(this.userId);
+
+    this.router.navigate(['/player',this.userId])
+
   }
 }

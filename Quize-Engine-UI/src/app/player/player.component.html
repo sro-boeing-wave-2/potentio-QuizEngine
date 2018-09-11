@@ -2,6 +2,7 @@
 <div class="player">
   <h3>Quiz</h3>
    <!-- <ng-template question-host></ng-template> -->
+   <h4>Time: {{ellapsedTime}} / {{duration}}</h4>
 </div>
 <app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
 <button class="btn-player" (click)="getNextQuestion()"   >Next</button>

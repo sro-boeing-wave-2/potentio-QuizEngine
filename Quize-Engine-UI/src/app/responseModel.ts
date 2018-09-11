@@ -1,7 +1,7 @@
 import { QuestionModel } from "./questionModule";
 
 export class ResponseModel {
-  public userID: number;
+  public userId: number;
   public domainName: string;
   public quizId:string;
   public currentQuestionIndex: number;
