@@ -8,6 +8,7 @@ export class QuestionModel {
   public userResponse : string;
   public DifficultyLevel : number;
   public IsCorrect : boolean;
+
 }
 
 class Options{

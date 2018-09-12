@@ -32,8 +32,8 @@ export class PlayerComponent implements OnInit {
       this.userId = id;
     });
     this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
-      let d = params.get('domain');
-      this.domainName = d;
+      let domain = params.get('domain');
+      this.domainName = domain;
     });
 
     this.playerService
@@ -76,14 +76,11 @@ export class PlayerComponent implements OnInit {
   }
 
   endQuiz() {
-    //this.playerService.sendResponse(this.question);
-    console.log("inside end quiz of player component");
-    //this.playerService.shuffleArray(this.numbers);
+
     return this.playerService.endQuiz(this.question);
 
   }
 
-  //numbers = [1,2,3,4,5,6,7,8,9,0];
 
 
 

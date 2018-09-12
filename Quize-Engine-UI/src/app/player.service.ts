@@ -56,45 +56,11 @@ private url="";
     this._connection.on('EndQuiz', msg => {
          this.result = msg;
          console.log("result is " +  JSON.stringify(this.result));
-         //this.router.navigate("localhost:4200/")
-
-        //  this.url = `${this.quizurl}/${this.selectedUser.id}/${DomainName}`;
-         this.url = `http://172.23.238.183:4301/start/77/maths`;
-
+          this.url = "http://172.23.238.183:4301/start/" + this.result.userId + "/" + this.result.domainName;
           this.document.location.href = this.url;
           });
 
   }
-
-  // -> Fisher–Yates shuffle algorithm
-shuffleArray(array) : void{
-  var m = array.length, t, i;
-
-  // While there remain elements to shuffle
-  while (m) {
-    // Pick a remaining element…
-    i = Math.floor(Math.random() * m--);
-
-    // And swap it with the current element.
-    t = array[m];
-    array[m] = array[i];
-    array[i] = t;
-  }
-
-  return console.log("Shuffling numbers: " + array);
-}
-
-
-
-
-  // onQuizEnded() {
-  //   this._connection.invoke('endQuiz');
-  //   // this._connection.on('endQuiz', msg => {
-  //   //   this.result = msg;
-  //   //   console.log("result is " + this.result.questionAttendedCount);
-  //   // });
-
-  // }
 
   // getComponents() {
   //   return [

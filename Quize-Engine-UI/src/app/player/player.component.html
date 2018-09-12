@@ -1,10 +1,22 @@
+<mat-card class="example-card">
+  <mat-card-header>
+    <!-- <div mat-card-avatar class="example-header-image"></div>
+    <mat-card-title>Shiba Inu</mat-card-title>
+    <mat-card-subtitle>Dog Breed</mat-card-subtitle> -->
+    <h3>Quiz</h3>
+    <!-- <h4>Time: {{ellapsedTime}} / {{duration}}</h4> -->
+  </mat-card-header>
 
-<div class="player">
-  <h3>Quiz</h3>
-   <!-- <ng-template question-host></ng-template> -->
-   <h4>Time: {{ellapsedTime}} / {{duration}}</h4>
-</div>
-<app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
-<button class="btn-player" (click)="getNextQuestion()"   >Next</button>
-<button class="btn-player" (click)="endQuiz()">Submit</button>
+  <mat-card-content>
+    <app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
+     <!-- <ng-template question-host></ng-template> -->
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-button (click)="getNextQuestion()">NEXT</button>
+    <button mat-button (click)="endQuiz()">SUBMIT</button>
+  </mat-card-actions>
+</mat-card>
+
+
+
 
