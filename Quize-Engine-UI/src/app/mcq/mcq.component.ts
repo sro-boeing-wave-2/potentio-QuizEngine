@@ -1,12 +1,14 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { QuestionModel } from '../questionModule';
+import { AdComponents } from '../adComponent';
+import { LocalStorageService } from 'ngx-webstorage';
 //import {PlayerService} from '../player.service';
 @Component({
   selector: 'app-mcq',
   templateUrl: './mcq.component.html',
   styleUrls: ['./mcq.component.css']
 })
-export class McqComponent implements OnInit {
+export class McqComponent implements OnInit, AdComponents {
 
   private _response: string;
   public options : string[];
@@ -18,10 +20,11 @@ export class McqComponent implements OnInit {
   set response(responseValue) {
     console.log(responseValue);
     this._response = responseValue;
+    this.localStorage.store("response", responseValue);
     this.onResponse.emit(responseValue);
   }
 
-  constructor() { }
+  constructor(private localStorage: LocalStorageService) { }
 
   ngOnInit() {}
 

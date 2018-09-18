@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router,  ActivatedRoute, ParamMap } from '@angular/router';
 import { PlayerService } from '../player.service';
+import { AdItem } from '../ad-item';
 //import { PlayerComponent } from '../player/player.component';
 
 @Component({
@@ -11,6 +12,7 @@ import { PlayerService } from '../player.service';
 export class StartComponent implements OnInit {
    userId: number;
    domain: string;
+   //questionComponents: AdItem[];
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private playerService: PlayerService) { }
 
   ngOnInit() {
@@ -28,11 +30,9 @@ export class StartComponent implements OnInit {
   }
 
   startQuiz() {
+   // this.questionComponents = this.playerService.getComponents();
     this.playerService.startQuiz(this.userId, this.domain);
-    console.log("inside start method file");
-    //this.playerService.onConnectionMapping(this.userId);
-
-    this.router.navigate(['/player',this.userId])
+    this.router.navigate(['/player',this.userId]);
 
   }
 }

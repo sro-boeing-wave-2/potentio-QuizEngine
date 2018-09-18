@@ -1,21 +1,22 @@
-import { Component } from '@angular/core';
-import { AdComponents } from './adComponent';
+import { Component, OnInit } from '@angular/core';
 import { PlayerService } from './player.service';
+import { AdItem } from './ad-item';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  title = 'Quize-Engine-UI';
-  questionComponents: AdComponents[];
-  userId: string;
-  domain: string;
+export class AppComponent implements  OnInit {
 
-  constructor(private playerService: PlayerService) {}
+  questionComponents: AdItem[];
+
+
+  constructor() {}
 
   ngOnInit() {
-   // this.questionComponents = this.playerService.getComponents();
+
+
+
   }
 }

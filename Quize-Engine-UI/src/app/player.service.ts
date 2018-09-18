@@ -7,6 +7,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from './responseModel';
 import { Router } from '@angular/router';
 import { DOCUMENT } from '@angular/common';
+import { AdItem } from './ad-item';
+import { McqComponent } from './mcq/mcq.component';
+import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
+import { PlayerComponent } from './player/player.component';
 
 @Injectable()
 export class PlayerService {
@@ -26,11 +30,13 @@ private url="";
 
   startQuiz(userId: number, domain: string)
   {
+
     this._connection = new HubConnectionBuilder().withUrl("http://localhost:9100/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     // this._connection.on('EndQuiz', this.onQuizEnded.bind(this));
-    console.log("this is the front end domain" + domain);
+
     this._connection.start().then(() => { this._connection.invoke('StartQuiz', userId, domain); });
+    //this.playerComponent.loadComponent();
   }
 
   getQuestionStream(): Observable<QuestionModel> {
@@ -56,17 +62,20 @@ private url="";
     this._connection.on('EndQuiz', msg => {
          this.result = msg;
          console.log("result is " +  JSON.stringify(this.result));
-          this.url = "http://172.23.238.183:4301/start/" + this.result.userId + "/" + this.result.domainName;
-          this.document.location.href = this.url;
+          // this.url = "http://172.23.238.183:4301/start/" + this.result.userId + "/" + this.result.domainName;
+          // this.document.location.href = this.url;
           });
 
   }
 
-  // getComponents() {
-  //   return [
-  //     new AdComponents(McqComponent, "hello man"),
-  //     new AdComponents(FillInTheBlanksComponent,"hello sddc")
-  //   ];
-  // }
+
+  getComponents() {
+    return [
+      new AdItem(McqComponent),
+      new AdItem(FillInTheBlanksComponent)
+
+    ];
+
+   }
 }
 

@@ -6,13 +6,13 @@
     <h3>Quiz</h3>
     <!-- <h4>Time: {{ellapsedTime}} / {{duration}}</h4> -->
   </mat-card-header>
-
+  <h4>Time: {{ellapsedTime}} / {{duration}}</h4>
   <mat-card-content>
-    <app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq>
-     <!-- <ng-template question-host></ng-template> -->
+    <!-- <app-mcq (onResponse)="onResponseReceived($event)" [question]="question"></app-mcq> -->
+    <ng-template question-host ></ng-template>
   </mat-card-content>
   <mat-card-actions>
-    <button mat-button (click)="getNextQuestion()">NEXT</button>
+    <button mat-button (click)="getNextQuestion()" >NEXT</button>
     <button mat-button (click)="endQuiz()">SUBMIT</button>
   </mat-card-actions>
 </mat-card>

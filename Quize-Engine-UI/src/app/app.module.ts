@@ -12,6 +12,7 @@ import { QuestionDirective } from './question.directive';
 import { PlayerService } from './player.service';
 import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
 import { StartComponent } from './start/start.component';
+import { Ng2Webstorage } from 'ngx-webstorage';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { StartComponent } from './start/start.component';
     BrowserAnimationsModule,
     FormsModule,
     MatRadioModule,
-    MaterialModule
+    MaterialModule,
+    Ng2Webstorage
   ],
   providers: [
     PlayerService
