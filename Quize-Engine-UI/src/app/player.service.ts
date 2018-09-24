@@ -30,7 +30,7 @@ private url="";
 
   startQuiz(userId: number, domain: string)
   {
-
+    console.log("THIS IS INSIDE STARTQUIZ");
     this._connection = new HubConnectionBuilder().withUrl("http://localhost:9100/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
     // this._connection.on('EndQuiz', this.onQuizEnded.bind(this));
@@ -47,7 +47,7 @@ private url="";
     return throwError(err.message || "Not Found");
   }
 
-  getNextQuestion(response: QuestionModel) {
+  getNextQuestion(response: any) {
     //console.log("this is inside Get next question " + response.userResponse);
     return this._connection.invoke('GetNextQuestion', response);
   }

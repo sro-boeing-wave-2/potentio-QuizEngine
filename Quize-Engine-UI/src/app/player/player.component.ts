@@ -8,6 +8,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 import { AdItem } from '../ad-item';
 import { FillInTheBlanksComponent } from '../fill-in-the-blanks/fill-in-the-blanks.component';
 import { LocalStorageService } from 'ngx-webstorage';
+import { MCQModel } from '../MCQModel';
+import { MMCQModel } from '../../MMCQModel';
 
 @Component({
   selector: 'app-player',
@@ -28,6 +30,7 @@ export class PlayerComponent implements OnInit {
   endTime: Date;
   ellapsedTime = '00:00';
   duration = '';
+  questionType : string;
   ngOnInit() {
 
     this.activatedRoute.paramMap.subscribe((params: ParamMap)=> {
@@ -54,8 +57,9 @@ export class PlayerComponent implements OnInit {
      this.timer = setInterval(() => { this.tick(); }, 1000);
      this.duration = this.parseTime(300);
   }
-  question : QuestionModel;
-
+  question : any;
+  mcqQuestion : MCQModel;
+  mmcqQuestion : MMCQModel;
   onResponseReceived(response) {
     console.log("this is the user response " + response);
     this.question.userResponse = response;
@@ -63,13 +67,27 @@ export class PlayerComponent implements OnInit {
 
   getNextQuestion() {
     console.log("Testing ", this.localStorage.retrieve("response"));
-    this.question.userResponse = this.localStorage.retrieve("response");
-    console.log("this is the response attachde " , this.question.userResponse);
-     return this.playerService.getNextQuestion(this.question).then(()=>this.loadComponent(this.question));
+    this.questionType = this.question["questionType"];
+    switch(this.questionType) {
+      case "MCQ":
+      {
+      this.mcqQuestion.response = this.localStorage.retrieve("response");
+      return this.playerService.getNextQuestion(this.mcqQuestion).then(()=>this.loadComponent(this.question));
+      }
+
+      case "MMCQ":
+      {
+      this.mmcqQuestion.response = this.localStorage.retrieve("response");
+      return this.playerService.getNextQuestion(this.mmcqQuestion).then(()=>this.loadComponent(this.question));
+      }
+    }
+
+
     // this.loadComponent();
   }
 
   endQuiz() {
+
     this.question.userResponse = this.localStorage.retrieve("response");
     return this.playerService.endQuiz(this.question);
   }
@@ -89,14 +107,34 @@ export class PlayerComponent implements OnInit {
       secs = (secs < 10 ? '0' : '') + secs;
       return `${mins}:${secs}`;
     }
-  loadComponent(question:QuestionModel) {
+  loadComponent(question:any) {
+
+
     let adItem;
-    switch(question.questionType) {
-      case "MCQType":
+    this.questionType = question["questionType"];
+    console.log("INSIDE LOAD COMPONENT " + this.questionType);
+    switch(this.questionType) {
+      case "MCQ":
+      {
+      this.mcqQuestion = question;
       adItem = this.questionComponents[0];
+      let componentFactory = this.componentFactoryResolver.resolveComponentFactory(adItem.component);
+      let viewContainerRef = this.questionHost.viewContainerRef;
+      viewContainerRef.clear();
+      let componentRef = viewContainerRef.createComponent(componentFactory);
+      (<AdComponents>componentRef.instance).question = this.mcqQuestion;
+      }
       break;
-      case "FillBlanks":
-      adItem = this.questionComponents[1];
+      case "MMCQ":
+      {
+      this.mmcqQuestion = question;
+      adItem = this.questionComponents[0];
+      let componentFactory = this.componentFactoryResolver.resolveComponentFactory(adItem.component);
+      let viewContainerRef = this.questionHost.viewContainerRef;
+      viewContainerRef.clear();
+      let componentRef = viewContainerRef.createComponent(componentFactory);
+      (<AdComponents>componentRef.instance).question = this.mmcqQuestion;
+      }
       break;
 
     }
@@ -107,11 +145,7 @@ export class PlayerComponent implements OnInit {
     // else {
     //    adItem = this.questionComponents[1];
     // }
-    let componentFactory = this.componentFactoryResolver.resolveComponentFactory(adItem.component);
-    let viewContainerRef = this.questionHost.viewContainerRef;
-    viewContainerRef.clear();
-    let componentRef = viewContainerRef.createComponent(componentFactory);
-    (<AdComponents>componentRef.instance).question = question;
+
 
   }
 
