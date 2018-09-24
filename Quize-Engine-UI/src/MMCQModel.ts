@@ -14,6 +14,7 @@ export class MMCQModel {
 }
 
 class MMCQOption{
+
   public raw : string;
   public optionText : string;
 }

@@ -1,16 +1,15 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core'
+import { Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import { QuestionModel } from '../questionModule';
-import { AdComponents } from '../adComponent';
+import { AdComponents} from '../adComponent';
 import { LocalStorageService } from 'ngx-webstorage';
-//import {PlayerService} from '../player.service';
 @Component({
-  selector: 'app-mcq',
-  templateUrl: './mcq.component.html',
-  styleUrls: ['./mcq.component.css']
+  selector: 'app-mmcq',
+  templateUrl: './mmcq.component.html',
+  styleUrls: ['./mmcq.component.css']
 })
-export class McqComponent implements OnInit, AdComponents {
+export class MmcqComponent implements OnInit, AdComponents {
 
-  private _response: string;
+  private _response : string;
   public options : string[];
 
   get response() {
@@ -24,10 +23,12 @@ export class McqComponent implements OnInit, AdComponents {
     this.onResponse.emit(responseValue);
   }
 
-  constructor(private localStorage: LocalStorageService) { }
+  constructor(private localStorage : LocalStorageService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   @Input() question: QuestionModel;
   @Output() onResponse = new EventEmitter<any>();
+
 }

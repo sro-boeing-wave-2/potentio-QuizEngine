@@ -1,7 +1,6 @@
 import { HubConnectionBuilder, HubConnection } from '@aspnet/signalr';
-import { Injectable, EventEmitter, Input, Inject} from '@angular/core';
+import { Input, EventEmitter, Output, Injectable, Inject } from '@angular/core';
 import { QuestionModel } from './questionModule';
-import { Subject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseModel } from './responseModel';
@@ -11,6 +10,8 @@ import { AdItem } from './ad-item';
 import { McqComponent } from './mcq/mcq.component';
 import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
 import { PlayerComponent } from './player/player.component';
+import { MmcqComponent } from './mmcq/mmcq.component';
+import { throwError, Subject, Observable } from 'rxjs';
 
 @Injectable()
 export class PlayerService {
@@ -20,16 +21,14 @@ export class PlayerService {
 
   @Input() response: any;
 
-  constructor(private router: Router, @Inject(DOCUMENT) private document: any)
-  {
+  constructor(private router: Router, @Inject(DOCUMENT) private document: any) {
     this._question = new Subject();
   }
 
-private resulturl = "http://localhost:4300/start";
-private url="";
+  private resulturl = "http://localhost:4300/start";
+  private url = "";
 
-  startQuiz(userId: number, domain: string)
-  {
+  startQuiz(userId: number, domain: string) {
     console.log("THIS IS INSIDE STARTQUIZ");
     this._connection = new HubConnectionBuilder().withUrl("http://localhost:9100/question").build();
     this._connection.on('NextQuestion', this.onNextQuestionHandler.bind(this));
@@ -56,26 +55,23 @@ private url="";
     return this._question.next(nextQuestion);
   }
 
-  endQuiz(question : QuestionModel) {
+  endQuiz(question: QuestionModel) {
     console.log("inside end quiz of player service");
     this._connection.invoke('EndQuiz', question);
     this._connection.on('EndQuiz', msg => {
-         this.result = msg;
-         console.log("result is " +  JSON.stringify(this.result));
-          // this.url = "http://172.23.238.183:4301/start/" + this.result.userId + "/" + this.result.domainName;
-          // this.document.location.href = this.url;
-          });
-
+      this.result = msg;
+      console.log("result is " + JSON.stringify(this.result));
+      // this.url = "http://172.23.238.183:4301/start/" + this.result.userId + "/" + this.result.domainName;
+      // this.document.location.href = this.url;
+    });
   }
-
-
   getComponents() {
     return [
       new AdItem(McqComponent),
-      new AdItem(FillInTheBlanksComponent)
-
+      new AdItem(FillInTheBlanksComponent),
+      new AdItem(MmcqComponent)
     ];
 
-   }
+  }
 }
 

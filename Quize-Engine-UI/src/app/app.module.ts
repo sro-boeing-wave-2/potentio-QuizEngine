@@ -13,6 +13,7 @@ import { PlayerService } from './player.service';
 import { FillInTheBlanksComponent } from './fill-in-the-blanks/fill-in-the-blanks.component';
 import { StartComponent } from './start/start.component';
 import { Ng2Webstorage } from 'ngx-webstorage';
+import { MmcqComponent } from './mmcq/mmcq.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { Ng2Webstorage } from 'ngx-webstorage';
     McqComponent,
     QuestionDirective,
     FillInTheBlanksComponent,
-    StartComponent
+    StartComponent,
+    MmcqComponent
   ],
   imports: [
     BrowserModule,

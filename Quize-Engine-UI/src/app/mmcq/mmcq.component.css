@@ -1,0 +1,25 @@
+.example-radio-group {
+  display: inline-flex;
+  flex-direction: column;
+ }
+
+ .example-radio-button {
+  margin: 5px;
+ }
+
+ .example-selected-value {
+  margin: 15px 0;
+ }
+ .example-card {
+  max-width: 400px;
+  margin-left: 20%;
+  margin-right:10%;
+  background-color: antiquewhite;
+
+}
+
+.example-header-image {
+  background-color: brown;
+  background-size: cover;
+}
+
